@@ -39,12 +39,7 @@ app.get('/student',async(req,res)=>{
      
      
      
-      // Student.find().then((result)=>{
-      //       console.log(result)
-      //       res.status(200).send(result)
-      // }).catch((err)=>{
-      //       res.status(500).send(err)
-      // })
+     
 //      let {name}=req.query
       const name=req.query.name
       try {
@@ -93,17 +88,7 @@ app.put('/student/:id',async(req,res)=>{
         res.status(500).json({msg:"err"})
       }
      
-      // const {name,place,phoneNo} = req.body;
-      //  const id =req.params.id;
-      // Student.update({_id:id},{$set:{name:name,place:place,phoneNo:phoneNo}})
-      // .then((result)=>{
-      //       console.log(res)
-      //       res.status(200).json({msge:"sucessfully updated"})
-      //       .catch((err)=>{
-      //             console.log(err)
-      //             res.status(500).json({msg:"err occurd"})
-      //       })
-      // })
+     
 })
 
 
@@ -118,8 +103,7 @@ app.post('/student',async(req,res)=>{
             phoneNo:req.body.phoneNo
        })
      
-     
-     try{
+ try{
          const postdata= await nstudent.save();
          res.status(200).json({result:postdata})
      }catch{
@@ -137,10 +121,6 @@ app.delete('/student/:id',async (req,res)=>{
       }catch{
            res.status(500).json({msg:"error"})
       }
-      
-      
-      
-      
 })
 app.delete('/student',async (req,res)=>{
     
@@ -150,16 +130,7 @@ app.delete('/student',async (req,res)=>{
     }catch{
         res.status(500).json({msg:"error while delteing"})
     }
-    
-    
-     
 })
-
-
-
-
-
-
 app.listen(3003,()=>{
       console.log(`listneing on port no ${PORT}`)
 })
