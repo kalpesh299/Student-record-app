@@ -17,11 +17,7 @@ mongoose.connect(DB,{useNewUrlParser:true,useUnifiedTopology:true,useCreateIndex
 
 
 const studentschema = mongoose.Schema({
-     // _id:mongoose.Schema.Types.ObjectId,
-      // image : {
-      //       type:String,
-      //       require:true},
-      name :{
+  name :{
             type:String,
             require:true  },
      place:{
@@ -49,8 +45,8 @@ app.get('/student',async(req,res)=>{
       // }).catch((err)=>{
       //       res.status(500).send(err)
       // })
-     let {name}=req.query
-     
+//      let {name}=req.query
+      const name=req.query.name
       try {
              if(!name){
                   
@@ -71,15 +67,7 @@ app.get('/student',async(req,res)=>{
       }
 })
 app.get('/student/:id',async(req,res)=>{
-      // const id = req.params.id;
-      // Student.find({_id:id},(err,result)=>{
-      //       if(err){
-      //             console.log(err)
-      //             res.status(500).json('err')
-      //       }else{
-      //             res.status(200).json(result)
-         //   }
-     // })
+     
      const id = req.params.id;
      try{
       const studenget= await Student.find({_id:id});
@@ -94,69 +82,77 @@ app.get('/student/:id',async(req,res)=>{
 
 
 })
-app.put('/student/:id',(req,res)=>{
+app.put('/student/:id',async(req,res)=>{
+      const {name,place,phoneNo} = req.body;
+      const id =req.params.id;
+      
+      try{
+         const updatestudent = await Student.update({_id:id},{$set:{name:name,place:place,phoneNo:phoneNo}})
+         res.status(200).json({result:updatestudent})
+      }catch{
+        res.status(500).json({msg:"err"})
+      }
      
-      //const {id,image,name,place,phone} = req.body;
-       const id =req.params.id;
-      const name=req.body.name;
-       const place=req.body.place;
-      const phoneNo=req.body.phoneNo;
-      Student.update({_id:id},{$set:{name:name,place:place,phoneNo:phoneNo}})
-      .then((result)=>{
-            console.log(res)
-            res.status(200).json({msge:"sucessfully updated"})
-            .catch((err)=>{
-                  console.log(err)
-                  res.status(500).json({msg:"err occurd"})
-            })
-      })
+      // const {name,place,phoneNo} = req.body;
+      //  const id =req.params.id;
+      // Student.update({_id:id},{$set:{name:name,place:place,phoneNo:phoneNo}})
+      // .then((result)=>{
+      //       console.log(res)
+      //       res.status(200).json({msge:"sucessfully updated"})
+      //       .catch((err)=>{
+      //             console.log(err)
+      //             res.status(500).json({msg:"err occurd"})
+      //       })
+      // })
 })
 
 
-app.post('/student',(req,res)=>{
+app.post('/student',async(req,res)=>{
       // console.log(req.body.image);
       // console.log(req.body.name);
       // console.log(req.body.place);
       // console.log(req.body.phone);
       const nstudent = new Student({
-            _id : new mongoose.Types.ObjectId,
-            // image:req.body.image,
             name:req.body.name,
             place:req.body.place,
             phoneNo:req.body.phoneNo
        })
-       nstudent.save()
-       .then((result)=>{
-             console.log('data save suscessfull');
-             res.status(200).json({msge:"data save sucessfully"})
-       }).catch((err)=>{
-             console.log('err');
-             res.status(500).json({msge:"dont worry do it again"})
-       })
-      
+     
+     
+     try{
+         const postdata= await nstudent.save();
+         res.status(200).json({result:postdata})
+     }catch{
+         res.status(500).json({msge:"problem while posting"})
+     }
 })
 
-app.delete('/student/:id',(req,res)=>{
+app.delete('/student/:id',async (req,res)=>{
       
       const id = req.params.id;
-      Student.deleteOne({_id:id},(err,result)=>{
-            if(err)
-            {
-                  console.log(err);
-                  res.status(500).send('error')
-            }else{
-                  res.status(200).json({msge:"record successfully deleted"})
-            }
-      })
+      
+      try{
+        const deletestudent=await Student.deleteOne({_id:id})
+            res.status(200).json({result:deletestudent})
+      }catch{
+           res.status(500).json({msg:"error"})
+      }
+      
+      
+      
+      
 })
-app.delete('/student',(req,res)=>{
-      Student.deleteMany().then((result)=>{
-         console.log("all items delted")
-         res.status(200).json({masge:"all data delted"})
-      }).catch((err)=>{
-            console.log("error whild delte all data")
-            res.status(500).json({msg:"problem occuring"})
-      })
+app.delete('/student',async (req,res)=>{
+    
+    try{
+       const alldelete=await Student.deleteMany();
+       res.status(200).json({result:alldelete})
+    }catch{
+        res.status(500).json({msg:"error while delteing"})
+    }
+    
+    
+     
 })
 
 
