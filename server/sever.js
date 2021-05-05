@@ -33,12 +33,7 @@ const studentschema = mongoose.Schema({
 
 const Student = new mongoose.model('student',studentschema);
 
-
-
 app.get('/student',async(req,res)=>{
-     
-     
-     
      
 //      let {name}=req.query
       const name=req.query.name
@@ -90,8 +85,6 @@ app.put('/student/:id',async(req,res)=>{
      
      
 })
-
-
 app.post('/student',async(req,res)=>{
       // console.log(req.body.image);
       // console.log(req.body.name);
@@ -102,8 +95,7 @@ app.post('/student',async(req,res)=>{
             place:req.body.place,
             phoneNo:req.body.phoneNo
        })
-     
- try{
+try{
          const postdata= await nstudent.save();
          res.status(200).json({result:postdata})
      }catch{
