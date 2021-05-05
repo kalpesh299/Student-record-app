@@ -1,0 +1,12 @@
+img {
+  margin-right: 80px !important;
+}
+a {
+  margin-right: 20px;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.record {
+  text-decoration: none !important;
+  color: white;
+}
