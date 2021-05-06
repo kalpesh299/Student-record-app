@@ -1,128 +1,129 @@
 const dotenv = require('dotenv');
 const mongoose = require('mongoose')
-const express = require ('express');
-const app= express();
+const express = require('express');
+const app = express();
 app.use(express.json());
 
-dotenv.config({path:'./config.env'})
+dotenv.config({ path: './config.env' })
 
-const DB=process.env.DATABASE
-const PORT=process.env.PORT
+const DB = process.env.DATABASE
+const PORT = process.env.PORT
 
 
 
-mongoose.connect(DB,{useNewUrlParser:true,useUnifiedTopology:true,useCreateIndex:true,useFindAndModify:false}).then(()=>{
+mongoose.connect(DB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false }).then(() => {
       console.log('connection is succeessfull')
-}).catch((err)=>{console.log('err')})
+}).catch((err) => { console.log('err') })
 
 
 const studentschema = mongoose.Schema({
-  name :{
-            type:String,
-            require:true  },
-     place:{
-            type:String,
-            require:true
-      } ,
-      phoneNo:{
-            type:Number,
-            require:true,
-           
-      }  
+      name: {
+            type: String,
+            require: true
+      },
+      place: {
+            type: String,
+            require: true
+      },
+      phoneNo: {
+            type: Number,
+            require: true,
+
+      }
 })
 
-const Student = new mongoose.model('student',studentschema);
+const Student = new mongoose.model('student', studentschema);
 
-app.get('/student',async(req,res)=>{
-     
-//      let {name}=req.query
-      const name=req.query.name
+app.get('/student', async (req, res) => {
+
+      let { name } = req.query
+      // const name=req.query.name
       try {
-             if(!name){
-                  
-                  const studentdata= await Student.find();
+            if (!name) {
+
+                  const studentdata = await Student.find();
                   res.status(200).json({
-                        result:studentdata
-                  }) 
-             }else{
-                  const studentdata= await Student.find({name:name})
+                        result: studentdata
+                  })
+            } else {
+                  const studentdata = await Student.find({ name: name })
                   res.status(200).json(studentdata)
-             }
+            }
 
 
-           
+
       }
-      catch(err){
-            res.status(500).json({msg:"data fetching problem"})
+      catch (err) {
+            res.status(500).json({ msg: "data fetching problem" })
       }
 })
-app.get('/student/:id',async(req,res)=>{
-     
-     const id = req.params.id;
-     try{
-      const studenget= await Student.find({_id:id});
-      res.status(200).json({
-            result:studenget
-      })
-    }catch{
-          res.status(500).json({msge:"err"})
-    }
+app.get('/student/:id', async (req, res) => {
 
-
-
-
-})
-app.put('/student/:id',async(req,res)=>{
-      const {name,place,phoneNo} = req.body;
-      const id =req.params.id;
-      
-      try{
-         const updatestudent = await Student.update({_id:id},{$set:{name:name,place:place,phoneNo:phoneNo}})
-         res.status(200).json({result:updatestudent})
-      }catch{
-        res.status(500).json({msg:"err"})
+      const id = req.params.id;
+      try {
+            const studenget = await Student.find({ _id: id });
+            res.status(200).json({
+                  result: studenget
+            })
+      } catch {
+            res.status(500).json({ msge: "err" })
       }
-     
-     
+
+
+
+
 })
-app.post('/student',async(req,res)=>{
+app.put('/student/:id', async (req, res) => {
+      const { name, place, phoneNo } = req.body;
+      const id = req.params.id;
+
+      try {
+            const updatestudent = await Student.update({ _id: id }, { $set: { name: name, place: place, phoneNo: phoneNo } })
+            res.status(200).json({ result: updatestudent })
+      } catch {
+            res.status(500).json({ msg: "err" })
+      }
+
+
+})
+app.post('/student', async (req, res) => {
       // console.log(req.body.image);
       // console.log(req.body.name);
       // console.log(req.body.place);
       // console.log(req.body.phone);
       const nstudent = new Student({
-            name:req.body.name,
-            place:req.body.place,
-            phoneNo:req.body.phoneNo
-       })
-try{
-         const postdata= await nstudent.save();
-         res.status(200).json({result:postdata})
-     }catch{
-         res.status(500).json({msge:"problem while posting"})
-     }
-})
-
-app.delete('/student/:id',async (req,res)=>{
-      
-      const id = req.params.id;
-      
-      try{
-        const deletestudent=await Student.deleteOne({_id:id})
-            res.status(200).json({result:deletestudent})
-      }catch{
-           res.status(500).json({msg:"error"})
+            name: req.body.name,
+            place: req.body.place,
+            phoneNo: req.body.phoneNo
+      })
+      try {
+            const postdata = await nstudent.save();
+            res.status(200).json({ result: postdata })
+      } catch {
+            res.status(500).json({ msge: "problem while posting" })
       }
 })
-app.delete('/student',async (req,res)=>{
-    
-    try{
-       const alldelete=await Student.deleteMany();
-       res.status(200).json({result:alldelete})
-    }catch{
-        res.status(500).json({msg:"error while delteing"})
-    }
+
+app.delete('/student/:id', async (req, res) => {
+
+      const id = req.params.id;
+
+      try {
+            const deletestudent = await Student.deleteOne({ _id: id })
+            res.status(200).json({ result: deletestudent })
+      } catch {
+            res.status(500).json({ msg: "error" })
+      }
 })
-app.listen(3003,()=>{
+app.delete('/student', async (req, res) => {
+
+      try {
+            const alldelete = await Student.deleteMany();
+            res.status(200).json({ result: alldelete })
+      } catch {
+            res.status(500).json({ msg: "error while delteing" })
+      }
+})
+app.listen(3003, () => {
       console.log(`listneing on port no ${PORT}`)
 })
