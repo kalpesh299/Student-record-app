@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 const Table = ({table,removestudent,updateswitch}) => {
-      console.log(table)
+      //console.log(table)
       const [search, setsearch] = useState("")
       
       return (
