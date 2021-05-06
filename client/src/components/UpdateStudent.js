@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const UpdateStudent = ({setupdateinput,updatestudent,updateinput}) => {
       const handelchange = (e) =>{
             setupdateinput((olditems)=>{
-                 console.log(olditems);
+                 //console.log(olditems);
                   return{...olditems,[e.target.name]:e.target.value}
                   
             })
