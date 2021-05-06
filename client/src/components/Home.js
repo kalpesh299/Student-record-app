@@ -29,7 +29,7 @@ const Home = () => {
       }, [])
       
       const addstudent =()=>{
-            if(input.name){
+            if(input.name){        
                   const adstudent ={
                         name:input.name,
                         place:input.place,
