@@ -19,10 +19,10 @@ const UpdateStudent = ({setupdateinput,updatestudent,updateinput}) => {
      }
 
       return (
-            <div>
-                  <form onSubmit={handelsubmit}>
+            <div className="ml-5 container d-flex justify-content-center my-5">
+                  <form onSubmit={handelsubmit} className="w-75 ml-5">
   <div className="form-group row">
-    <label  className="col-sm-2 col-form-label">Name</label>
+    <label  className="col-sm-2 col-form-label ">Name</label>
     <div className="col-sm-10">
       <input type="text" value={updateinput.name}  className="form-control" onChange={handelchange} name="name" placeholder="Enter your Name"/>
     </div>
@@ -39,7 +39,7 @@ const UpdateStudent = ({setupdateinput,updatestudent,updateinput}) => {
       <input type="text" value={updateinput.phoneNo} className="form-control" name="phoneNo" onChange={handelchange} placeholder="Enter your phone no"/>
     </div>
   </div>
-     <button className="btn btn-primary" type="submit" >Submit</button>
+   <div className="text-center my-3"><button className="btn btn-primary w-25" type="submit" >Submit</button></div> 
 </form>
  
             </div>
